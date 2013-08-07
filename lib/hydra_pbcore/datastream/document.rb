@@ -9,8 +9,8 @@ class Document < ActiveFedora::OmDatastream
     return solr_document
   end
 
-  set_terminology do |t|
-    t.root(:path=>"pbcoreDescriptionDocument")
+  set_tersadfminology do |t|
+    t.root
 
     t.pbc_id(:path=>"pbcoreIdentifier", 
       :attributes=>{ :source=>HydraPbcore.config["institution"], :annotation=>"PID" }
