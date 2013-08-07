@@ -4,13 +4,13 @@ class Document < ActiveFedora::OmDatastream
   include HydraPbcore::Methods
   include HydraPbcore::Templates
   
-  def to_solr
-    super(solr_document, options)
-    return solr_document
-  end
+  # def to_solr
+  #   super(solr_document, options)
+  #   return solr_document
+  # end
 
-  set_tersadfminology do |t|
-    t.root
+  set_terminology do |t|
+    t.root(:path=>"pbcoreDescriptionDocument")
 
     t.pbc_id(:path=>"pbcoreIdentifier", 
       :attributes=>{ :source=>HydraPbcore.config["institution"], :annotation=>"PID" }
