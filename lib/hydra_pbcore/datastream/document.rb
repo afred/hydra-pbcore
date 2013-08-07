@@ -3,6 +3,12 @@ class Document < ActiveFedora::OmDatastream
 
   include HydraPbcore::Methods
   include HydraPbcore::Templates
+  
+  def to_solr
+    super(solr_document, options)
+    solr_document["my_attribute_s"] = 'testing'
+    return solr_document
+  end
 
   set_terminology do |t|
     t.root(:path=>"pbcoreDescriptionDocument")
