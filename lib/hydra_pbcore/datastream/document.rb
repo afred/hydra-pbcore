@@ -6,7 +6,6 @@ class Document < ActiveFedora::OmDatastream
   
   def to_solr
     super(solr_document, options)
-    solr_document["my_attribute_s"] = 'testing'
     return solr_document
   end
 
@@ -31,6 +30,7 @@ class Document < ActiveFedora::OmDatastream
     t.translation(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Translation" }, 
       :index_as => [:searchable, :displayable]
     )
+    t.asset_date(:path=>"pbcoreAssetDate", :attributes=>{:dataType=>"broadcast"})
 
     # This is only to display all subjects
     t.subject(:path=>"pbcoreSubject", :index_as => [:facetable])
