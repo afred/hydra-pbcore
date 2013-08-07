@@ -11,10 +11,11 @@ class Document < ActiveFedora::OmDatastream
       :attributes=>{ :source=>HydraPbcore.config["institution"], :annotation=>"PID" }
     )
 
-    t.title(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Main" }, :index_as => [:searchable, :displayable, :sortable])
-    t.alternative_title(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Alternative" },
-      :index_as => [:searchable, :displayable]
-    )
+    t.title(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Program" }, :index_as => [:searchable, :displayable, :sortable])
+    # t.alternative_title(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Alternative" },
+#       :index_as => [:searchable, :displayable]
+#     )
+    t.series(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Series"}, :index_as => [:searchable, :displayable])
     t.chapter(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Chapter" }, :index_as => [:searchable, :displayable])
     t.episode(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Episode" }, :index_as => [:searchable, :displayable])
     t.label(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Label" }, :index_as => [:searchable, :displayable])
@@ -47,7 +48,7 @@ class Document < ActiveFedora::OmDatastream
 
     t.summary(:path=>"pbcoreDescription", 
       :attributes=>{ 
-        :descriptionType=>"Description",
+        :descriptionType=>"Program",
         :descriptionTypeSource=>"pbcoreDescription/descriptionType",
         :descriptionTypeRef=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#description",
         :annotation=>"Summary"
@@ -58,9 +59,7 @@ class Document < ActiveFedora::OmDatastream
     t.contents(:path=>"pbcoreDescription", 
       :attributes=>{ 
         :descriptionType=>"Table of Contents",
-        :descriptionTypeSource=>"pbcoreDescription/descriptionType",
-        :descriptionTypeRef=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#table-of-contents",
-        :annotation=>"Parts List"
+        :descriptionTypeRef=>"http://metadataregistry.org/concept/show/id/1702.html"
       },
       :index_as => [:searchable, :displayable]
     )
@@ -101,7 +100,7 @@ class Document < ActiveFedora::OmDatastream
       t.coll_num(:path=>"pbcoreRelationIdentifier", :attributes=>{ :annotation=>"Collection Number" })
       t.acc_num(:path=>"pbcoreRelationIdentifier", :attributes=>{ :annotation=>"Accession Number" })
     end
-    t.series(:ref=>[:pbcoreRelation, :event_series], :index_as => [:searchable, :displayable, :facetable])
+    #t.series(:ref=>[:pbcoreRelation, :event_series], :index_as => [:searchable, :displayable, :facetable])
     t.collection(:ref=>[:pbcoreRelation, :arch_coll], :index_as => [:searchable, :displayable, :facetable])
     t.archival_series(:ref=>[:pbcoreRelation, :arch_ser], :index_as => [:searchable, :displayable])
     t.collection_number(:ref=>[:pbcoreRelation, :coll_num], :index_as => [:searchable, :displayable])
