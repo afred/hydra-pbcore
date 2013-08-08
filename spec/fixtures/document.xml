@@ -1,7 +1,7 @@
 <pbcoreDescriptionDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.pbcore.org/PBCore/PBCoreNamespace.html">
   <pbcoreIdentifier source="Rock and Roll Hall of Fame and Museum" annotation="PID">inserted</pbcoreIdentifier>
-  <pbcoreTitle titleType="Main">inserted</pbcoreTitle>
-  <pbcoreDescription descriptionType="Description" descriptionTypeSource="pbcoreDescription/descriptionType" descriptionTypeRef="http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#description" annotation="Summary">inserted</pbcoreDescription>
+  <pbcoreTitle titleType="Program">inserted</pbcoreTitle>
+  <pbcoreDescription descriptionType="Program" descriptionTypeSource="pbcoreDescription/descriptionType" descriptionTypeRef="http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#description" annotation="Summary">inserted</pbcoreDescription>
   <pbcoreDescription descriptionType="Table of Contents" descriptionTypeSource="pbcoreDescription/descriptionType" descriptionTypeRef="http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#table-of-contents" annotation="Parts List">inserted</pbcoreDescription>
   <pbcoreRightsSummary>
     <rightsSummary>inserted</rightsSummary>
@@ -45,10 +45,6 @@
   </pbcoreRelation>
   <pbcoreRelation>
     <pbcoreRelationType source="PBCore relationType" ref="http://pbcore.org/vocabularies/relationType#is-part-of">Is Part Of</pbcoreRelationType>
-    <pbcoreRelationIdentifier annotation="Event Series">inserted</pbcoreRelationIdentifier>
-  </pbcoreRelation>
-  <pbcoreRelation>
-    <pbcoreRelationType source="PBCore relationType" ref="http://pbcore.org/vocabularies/relationType#is-part-of">Is Part Of</pbcoreRelationType>
     <pbcoreRelationIdentifier annotation="Archival Series">inserted</pbcoreRelationIdentifier>
   </pbcoreRelation>
   <pbcoreRelation>
@@ -73,5 +69,6 @@
   <pbcoreGenre source="The Getty Research Institute Art and Architecture Thesaurus" ref="http://www.getty.edu/research/tools/vocabularies/aat/index.html">inserted</pbcoreGenre>
   <pbcoreGenre source="Library of Congress Genre/Form Terms" ref="http://id.loc.gov/authorities/genreForms.html">inserted</pbcoreGenre>
   <pbcoreGenre source="Library of Congress Subject Headings" ref="http://id.loc.gov/authorities/subjects.html">inserted</pbcoreGenre>
+  <pbcoreTitle titleType="Series">inserted</pbcoreTitle>
   <pbcoreAssetType>Scene</pbcoreAssetType>
 </pbcoreDescriptionDocument>

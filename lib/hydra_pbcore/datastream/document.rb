@@ -17,9 +17,9 @@ class Document < ActiveFedora::OmDatastream
     )
 
     t.title(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Program" }, :index_as => [:searchable, :displayable, :sortable])
-    # t.alternative_title(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Alternative" },
-#       :index_as => [:searchable, :displayable]
-#     )
+    t.alternative_title(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Alternative" },
+       :index_as => [:searchable, :displayable]
+     )
     t.series(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Series"}, :index_as => [:searchable, :displayable])
     t.chapter(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Chapter" }, :index_as => [:searchable, :displayable])
     t.episode(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Episode" }, :index_as => [:searchable, :displayable])
@@ -65,7 +65,9 @@ class Document < ActiveFedora::OmDatastream
     t.contents(:path=>"pbcoreDescription", 
       :attributes=>{ 
         :descriptionType=>"Table of Contents",
-        :descriptionTypeRef=>"http://metadataregistry.org/concept/show/id/1702.html"
+        :descriptionTypeSource=>"pbcoreDescription/descriptionType",
+        :descriptionTypeRef=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#table-of-contents",
+        :annotation=>"Parts List"
       },
       :index_as => [:searchable, :displayable]
     )
@@ -163,8 +165,8 @@ class Document < ActiveFedora::OmDatastream
         "xsi:schemaLocation"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html") {
 
         xml.pbcoreIdentifier(:source=>HydraPbcore.config["institution"], :annotation=>"PID")
-        xml.pbcoreTitle(:titleType=>"Main")
-        xml.pbcoreDescription(:descriptionType=>"Description",
+        xml.pbcoreTitle(:titleType=>"Program")
+        xml.pbcoreDescription(:descriptionType=>"Program",
           :descriptionTypeSource=>"pbcoreDescription/descriptionType",
           :descriptionTypeRef=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#description",
           :annotation=>"Summary"
