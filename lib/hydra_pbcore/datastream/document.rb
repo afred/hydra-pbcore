@@ -154,8 +154,8 @@ class Document < ActiveFedora::OmDatastream
         "xsi:schemaLocation"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html") {
 
         xml.pbcoreIdentifier(:source=>HydraPbcore.config["institution"], :annotation=>"PID")
-        xml.pbcoreTitle(:titleType=>"Main")
-        xml.pbcoreDescription(:descriptionType=>"Description",
+        xml.pbcoreTitle(:titleType=>"Program")
+        xml.pbcoreDescription(:descriptionType=>"Program",
           :descriptionTypeSource=>"pbcoreDescription/descriptionType",
           :descriptionTypeRef=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#description",
           :annotation=>"Summary"

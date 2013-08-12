@@ -81,9 +81,6 @@ describe HydraPbcore::Datastream::Document do
       @object_ds.insert_relation("My Collection", 'Archival Collection')
       @object_ds.collection.should == ['My Collection']
 
-      @object_ds.insert_relation("My event", 'Event Series')
-      @object_ds.series.should == ['My event']
-
       @object_ds.insert_relation("My series", 'Archival Series')
       @object_ds.archival_series.should == ['My series']
 
@@ -131,7 +128,7 @@ describe HydraPbcore::Datastream::Document do
       @object_ds.insert_date("2012-11-12")
 
       @object_ds.insert_relation("inserted", 'Archival Collection')
-      @object_ds.insert_relation("inserted", 'Event Series')
+      #@object_ds.insert_relation("inserted", 'Event Series')
       @object_ds.insert_relation("inserted", 'Archival Series')
       @object_ds.insert_relation("inserted", 'Accession Number')
       @object_ds.insert_relation("inserted", 'Collection Number')
