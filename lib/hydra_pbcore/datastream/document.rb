@@ -4,38 +4,31 @@ class Document < ActiveFedora::OmDatastream
   include HydraPbcore::Methods
   include HydraPbcore::Templates
   
-  # def to_solr
-  #   super(solr_document, options)
-  #   return solr_document
-  # end
-
   set_terminology do |t|
     t.root(:path=>"pbcoreDescriptionDocument")
 
-    t.pbc_id(:path=>"pbcoreIdentifier", 
-      :attributes=>{ :source=>HydraPbcore.config["institution"], :annotation=>"PID" }
-    )
+    t.pbc_id(:path=>"pbcoreIdentifier", :type => :string, :attributes=>{ :source=>"NOLA Code" }, :index_as => [:displayable])
 
-    t.title(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Program" }, :index_as => [:searchable, :displayable, :sortable])
+    t.title(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Program" }, :index_as => [:facetable, :stored_searchable, :displayable])
     # t.alternative_title(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Alternative" },
-#       :index_as => [:searchable, :displayable]
+#       :index_as => [:stored_searchable, :displayable]
 #     )
-    t.series(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Series"}, :index_as => [:searchable, :displayable])
-    t.chapter(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Chapter" }, :index_as => [:searchable, :displayable])
-    t.episode(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Episode" }, :index_as => [:searchable, :displayable])
-    t.label(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Label" }, :index_as => [:searchable, :displayable])
-    t.segment(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Segment" }, :index_as => [:searchable, :displayable])
-    t.subtitle(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Subtitle" }, :index_as => [:searchable, :displayable])
-    t.track(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Track" }, :index_as => [:searchable, :displayable])
+    t.series(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Series"}, :index_as => [:facetable, :stored_searchable, :displayable])
+    t.chapter(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Chapter" }, :index_as => [:facetable, :stored_searchable, :displayable])
+    t.episode(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Episode" }, :index_as => [:facetable, :stored_searchable, :displayable])
+    t.asset_date(:path=>"pbcoreAssetDate", :type => :string, :index_as => [:facetable, :stored_searchable, :displayable])
+    t.label(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Label" }, :index_as => [:stored_searchable, :displayable])
+    t.segment(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Segment" }, :index_as => [:stored_searchable, :displayable])
+    t.subtitle(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Subtitle" }, :index_as => [:stored_searchable, :displayable])
+    t.track(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Track" }, :index_as => [:stored_searchable, :displayable])
     t.translation(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Translation" }, 
-      :index_as => [:searchable, :displayable]
+      :index_as => [:stored_searchable, :displayable]
     )
-    t.asset_date(:path=>"pbcoreAssetDate", :attributes=>{:dataType=>"broadcast"})
 
-    # This is only to display all subjects
+    #This is only to display all subjects
     t.subject(:path=>"pbcoreSubject", :index_as => [:facetable])
 
-    # Individual subject types defined for entry
+    #Individual subject types defined for entry
     t.lc_subject(:path=>"pbcoreSubject", 
       :attributes=>{ 
         :source=>"Library of Congress Subject Headings", 
@@ -55,11 +48,9 @@ class Document < ActiveFedora::OmDatastream
     t.summary(:path=>"pbcoreDescription", 
       :attributes=>{ 
         :descriptionType=>"Program",
-        :descriptionTypeSource=>"pbcoreDescription/descriptionType",
-        :descriptionTypeRef=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#description",
-        :annotation=>"Summary"
+        :descriptionTypeRef=>"http://metadataregistry.org/concept/show/id/1702.html",
         },
-        :index_as => [:searchable, :displayable]
+      :index_as => [:stored_searchable, :displayable]
     )
 
     t.contents(:path=>"pbcoreDescription", 
@@ -67,13 +58,13 @@ class Document < ActiveFedora::OmDatastream
         :descriptionType=>"Table of Contents",
         :descriptionTypeRef=>"http://metadataregistry.org/concept/show/id/1702.html"
       },
-      :index_as => [:searchable, :displayable]
+      :index_as => [:stored_searchable, :displayable]
     )
 
     # This is only to display all genres
     t.genre(:path=>"pbcoreGenre", :index_as => [:facetable])
 
-    t.asset_type(:path=>"pbcoreAssetType", :index_as => [:searchable, :facetable])
+    t.asset_type(:path=>"pbcoreAssetType", :index_as => [:stored_searchable, :facetable])
 
     # Individual genre types defined for entry
     t.getty_genre(:path=>"pbcoreGenre", 
@@ -106,53 +97,53 @@ class Document < ActiveFedora::OmDatastream
       t.coll_num(:path=>"pbcoreRelationIdentifier", :attributes=>{ :annotation=>"Collection Number" })
       t.acc_num(:path=>"pbcoreRelationIdentifier", :attributes=>{ :annotation=>"Accession Number" })
     end
-    #t.series(:ref=>[:pbcoreRelation, :event_series], :index_as => [:searchable, :displayable, :facetable])
-    t.collection(:ref=>[:pbcoreRelation, :arch_coll], :index_as => [:searchable, :displayable, :facetable])
-    t.archival_series(:ref=>[:pbcoreRelation, :arch_ser], :index_as => [:searchable, :displayable])
-    t.collection_number(:ref=>[:pbcoreRelation, :coll_num], :index_as => [:searchable, :displayable])
-    t.accession_number(:ref=>[:pbcoreRelation, :acc_num], :index_as => [:searchable, :displayable])
+    #t.series(:ref=>[:pbcoreRelation, :event_series], :index_as => [:stored_searchable, :displayable, :facetable])
+    t.collection(:ref=>[:pbcoreRelation, :arch_coll], :index_as => [:stored_searchable, :displayable, :facetable])
+    t.archival_series(:ref=>[:pbcoreRelation, :arch_ser], :index_as => [:stored_searchable, :displayable])
+    t.collection_number(:ref=>[:pbcoreRelation, :coll_num], :index_as => [:stored_searchable, :displayable])
+    t.accession_number(:ref=>[:pbcoreRelation, :acc_num], :index_as => [:stored_searchable, :displayable])
 
     t.pbcoreCoverage
     # Terms for time and place
     t.event_place(:path=>"pbcoreCoverage/coverage", 
       :attributes => {:annotation=>"Event Place"},
-      :index_as => [:searchable, :displayable]
+      :index_as => [:stored_searchable, :displayable]
     )
     t.event_date(:path=>"pbcoreCoverage/coverage", 
       :attributes => {:annotation=>"Event Date"},
       :index_as => [:dateable, :displayable]
     )
 
-    # Creator names and roles
-    t.creator(:path=>"pbcoreCreator") do
-      t.name_(:path=>"creator")
-      t.role_(:path=>"creatorRole", :attributes=>{ :source=>"PBCore creatorRole" })
-    end
-    t.creator_name(:ref=>[:creator, :name], :index_as => [:searchable, :facetable])
-    t.creator_role(:ref=>[:creator, :role], :index_as => [:searchable, :displayable])
+      # Creator names and roles
+      t.creator(:path=>"pbcoreCreator") do
+        t.creator
+        t.role_(:path=>"creatorRole", :attributes=>{ :ref=>"http://metadataregistry.org/concept/show/id/1425.html" })
+      end
+      t.creator_name(:ref=>[:creator, :creator], :type => :string, :index_as => [:stored_searchable, :displayable])
+      t.creator_role(:ref=>[:creator, :role], :type => :string, :index_as => [:stored_searchable, :displayable])
 
     # Contributor names and roles
     t.contributor(:path=>"pbcoreContributor") do
       t.name_(:path=>"contributor")
       t.role_(:path=>"contributorRole", :attributes=>{ :source=>HydraPbcore.config["relator"] })
     end
-    t.contributor_name(:ref=>[:contributor, :name], :index_as => [:searchable, :facetable])
-    t.contributor_role(:ref=>[:contributor, :role], :index_as => [:searchable, :displayable])
+    t.contributor_name(:ref=>[:contributor, :name], :index_as => [:stored_searchable, :facetable])
+    t.contributor_role(:ref=>[:contributor, :role], :index_as => [:stored_searchable, :displayable])
 
     # Publisher names and roles
     t.publisher(:path=>"pbcorePublisher") do
       t.name_(:path=>"publisher")
       t.role_(:path=>"publisherRole", :attributes=>{ :source=>"PBCore publisherRole" })
     end
-    t.publisher_name(:ref=>[:publisher, :name], :index_as => [:searchable, :facetable])
-    t.publisher_role(:ref=>[:publisher, :role], :index_as => [:searchable, :displayable])
+    t.publisher_name(:ref=>[:publisher, :name], :index_as => [:stored_searchable, :facetable])
+    t.publisher_role(:ref=>[:publisher, :role], :index_as => [:stored_searchable, :displayable])
 
-    t.note(:path=>"pbcoreAnnotation", :atttributes=>{ :annotationType=>"Notes" }, :index_as => [:searchable, :displayable])
+    t.note(:path=>"pbcoreAnnotation", :atttributes=>{ :annotationType=>"Notes" }, :index_as => [:stored_searchable, :displayable])
 
     t.pbcoreRightsSummary do
       t.rightsSummary
     end
-    t.rights_summary(:ref => [:pbcoreRightsSummary, :rightsSummary], :index_as => [:searchable, :displayable])
+    t.rights_summary(:ref => [:pbcoreRightsSummary, :rightsSummary], :index_as => [:stored_searchable, :displayable])
 
   end
 
