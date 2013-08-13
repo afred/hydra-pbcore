@@ -16,6 +16,7 @@ class Document < ActiveFedora::OmDatastream
     t.series(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Series"}, :index_as => [:facetable, :stored_searchable, :displayable])
     t.chapter(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Chapter" }, :index_as => [:facetable, :stored_searchable, :displayable])
     t.episode(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Episode" }, :index_as => [:facetable, :stored_searchable, :displayable])
+    t.title_clip(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Clip" }, :index_as => [:facetable, :stored_searchable, :displayable])
     t.asset_date(:path=>"pbcoreAssetDate", :type => :string, :index_as => [:facetable, :stored_searchable, :displayable])
     t.label(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Label" }, :index_as => [:stored_searchable, :displayable])
     t.segment(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Segment" }, :index_as => [:stored_searchable, :displayable])
@@ -26,7 +27,11 @@ class Document < ActiveFedora::OmDatastream
     )
 
     #This is only to display all subjects
-    t.subject(:path=>"pbcoreSubject", :index_as => [:facetable])
+    t.subject(:path=>"pbcoreSubject") do
+      t.name_(:path=>"subject")
+      t.authority_(:path=>'subjectAuthorityUsed')
+    end
+    t.subject_name(:ref=>[:subject, :name], :index_as => [:stored_searchable, :facetable, :displayable])
 
     #Individual subject types defined for entry
     t.lc_subject(:path=>"pbcoreSubject", 
@@ -48,6 +53,22 @@ class Document < ActiveFedora::OmDatastream
     t.summary(:path=>"pbcoreDescription", 
       :attributes=>{ 
         :descriptionType=>"Program",
+        :descriptionTypeRef=>"http://metadataregistry.org/concept/show/id/1702.html",
+        },
+      :index_as => [:stored_searchable, :displayable]
+    )
+    
+    t.desc_clip(:path=>"pbcoreDescription", 
+      :attributes=>{ 
+        :descriptionType=>"Clip",
+        :descriptionTypeRef=>"http://metadataregistry.org/concept/show/id/1702.html",
+        },
+      :index_as => [:stored_searchable, :displayable]
+    )
+    
+    t.desc_series(:path=>"pbcoreDescription", 
+      :attributes=>{ 
+        :descriptionType=>"Series",
         :descriptionTypeRef=>"http://metadataregistry.org/concept/show/id/1702.html",
         },
       :index_as => [:stored_searchable, :displayable]
@@ -135,7 +156,7 @@ class Document < ActiveFedora::OmDatastream
       t.name_(:path=>"publisher")
       t.role_(:path=>"publisherRole", :attributes=>{ :source=>"PBCore publisherRole" })
     end
-    t.publisher_name(:ref=>[:publisher, :name], :index_as => [:stored_searchable, :facetable])
+    t.publisher_name(:ref=>[:publisher, :name], :index_as => [:stored_searchable, :facetable, :displayable])
     t.publisher_role(:ref=>[:publisher, :role], :index_as => [:stored_searchable, :displayable])
 
     t.note(:path=>"pbcoreAnnotation", :atttributes=>{ :annotationType=>"Notes" }, :index_as => [:stored_searchable, :displayable])
