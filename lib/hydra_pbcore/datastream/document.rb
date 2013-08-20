@@ -25,7 +25,7 @@ class Document < ActiveFedora::OmDatastream
     t.translation(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Translation" }, 
       :index_as => [:stored_searchable, :displayable]
     )
-
+    t.category(:path=>"pbcoreSubject", :attributes=>{:subjectType=>"Category"},:index_as => [:facetable, :displayable])
     #This is only to display all subjects
     t.subject(:path=>"pbcoreSubject") do
       t.name_(:path=>"subject")
