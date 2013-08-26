@@ -19,7 +19,6 @@ describe HydraPbcore::Datastream::Document do
       [
         [:pbc_id],
         [:title],
-        [:alternative_title],
         [:chapter],
         [:episode],
         [:label],
@@ -27,7 +26,7 @@ describe HydraPbcore::Datastream::Document do
         [:subtitle],
         [:track],
         [:translation],
-        [:summary],
+        [:description],
         [:contents],
         [:lc_subject],
         [:lc_name],
@@ -135,7 +134,6 @@ describe HydraPbcore::Datastream::Document do
 
       @object_ds.pbc_id               = "inserted"
       @object_ds.title                = "inserted"
-      @object_ds.alternative_title    = "inserted"
       @object_ds.chapter              = "inserted"
       @object_ds.episode              = "inserted"
       @object_ds.label                = "inserted"
@@ -143,7 +141,7 @@ describe HydraPbcore::Datastream::Document do
       @object_ds.subtitle             = "inserted"
       @object_ds.track                = "inserted"
       @object_ds.translation          = "inserted"
-      @object_ds.summary              = "inserted"
+      @object_ds.description          = "inserted"
       @object_ds.contents             = "inserted"
       @object_ds.lc_subject           = "inserted"
       @object_ds.lc_name              = "inserted"

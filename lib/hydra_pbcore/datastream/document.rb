@@ -9,23 +9,38 @@ class Document < ActiveFedora::OmDatastream
 
     t.pbc_id(:path=>"pbcoreIdentifier", :type => :string, :attributes=>{ :source=>"NOLA Code" }, :index_as => [:displayable])
 
-    t.title(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Program" }, :index_as => [:facetable, :stored_searchable, :displayable])
-    # t.alternative_title(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Alternative" },
-#       :index_as => [:stored_searchable, :displayable]
-#     )
+    t.title(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Main" }, :index_as => [:facetable, :stored_searchable, :displayable])
+
     t.series(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Series"}, :index_as => [:facetable, :stored_searchable, :displayable])
+
+    t.program(:path => "pbcoreTitle", :attributes=>{:titleType=>"Program"}, :index_as => [:facetable, :stored_searchable, :displayable])
+
     t.chapter(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Chapter" }, :index_as => [:facetable, :stored_searchable, :displayable])
+
     t.episode(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Episode" }, :index_as => [:facetable, :stored_searchable, :displayable])
-    t.title_clip(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Clip" }, :index_as => [:facetable, :stored_searchable, :displayable])
-    t.asset_date(:path=>"pbcoreAssetDate", :type => :string, :index_as => [:facetable, :stored_searchable, :displayable])
+    
+    t.element(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Element" }, :index_as => [:facetable, :stored_searchable, :displayable])
+    
+    t.clip(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Clip" }, :index_as => [:facetable, :stored_searchable, :displayable])
+    
     t.label(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Label" }, :index_as => [:stored_searchable, :displayable])
+    
     t.segment(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Segment" }, :index_as => [:stored_searchable, :displayable])
+    
     t.subtitle(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Subtitle" }, :index_as => [:stored_searchable, :displayable])
+    
     t.track(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Track" }, :index_as => [:stored_searchable, :displayable])
-    t.translation(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Translation" }, 
-      :index_as => [:stored_searchable, :displayable]
-    )
+    
+    t.item(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Item" }, :index_as => [:stored_searchable, :displayable])
+
+    t.image(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Image" }, :index_as => [:stored_searchable, :displayable])
+    
+    t.translation(:path=>"pbcoreTitle", :attributes=>{ :titleType=>"Translation" }, :index_as => [:stored_searchable, :displayable])
+
     t.category(:path=>"pbcoreSubject", :attributes=>{:subjectType=>"Category"},:index_as => [:facetable, :displayable])
+
+    t.asset_date(:path=>"pbcoreAssetDate", :type => :string, :index_as => [:facetable, :stored_searchable, :displayable])
+
     #This is only to display all subjects
     t.subject(:path=>"pbcoreSubject") do
       t.name_(:path=>"subject")
@@ -50,29 +65,9 @@ class Document < ActiveFedora::OmDatastream
       :index_as => [:displayable]
     )
 
-    t.summary(:path=>"pbcoreDescription", 
-      :attributes=>{ 
-        :descriptionType=>"Program",
-        :descriptionTypeRef=>"http://metadataregistry.org/concept/show/id/1702.html",
-        },
-      :index_as => [:stored_searchable, :displayable]
-    )
-    
-    t.desc_clip(:path=>"pbcoreDescription", 
-      :attributes=>{ 
-        :descriptionType=>"Clip",
-        :descriptionTypeRef=>"http://metadataregistry.org/concept/show/id/1702.html",
-        },
-      :index_as => [:stored_searchable, :displayable]
-    )
-    
-    t.desc_series(:path=>"pbcoreDescription", 
-      :attributes=>{ 
-        :descriptionType=>"Series",
-        :descriptionTypeRef=>"http://metadataregistry.org/concept/show/id/1702.html",
-        },
-      :index_as => [:stored_searchable, :displayable]
-    )
+    t.description(:path => 'pbcoreDescription', :index_as => [:stored_searchable, :displayable]) {
+      t.type(:path => {:attribute => 'descriptionType'})
+    }
 
     t.contents(:path=>"pbcoreDescription", 
       :attributes=>{ 
@@ -118,7 +113,8 @@ class Document < ActiveFedora::OmDatastream
       t.coll_num(:path=>"pbcoreRelationIdentifier", :attributes=>{ :annotation=>"Collection Number" })
       t.acc_num(:path=>"pbcoreRelationIdentifier", :attributes=>{ :annotation=>"Accession Number" })
     end
-    #t.series(:ref=>[:pbcoreRelation, :event_series], :index_as => [:stored_searchable, :displayable, :facetable])
+    
+
     t.collection(:ref=>[:pbcoreRelation, :arch_coll], :index_as => [:stored_searchable, :displayable, :facetable])
     t.archival_series(:ref=>[:pbcoreRelation, :arch_ser], :index_as => [:stored_searchable, :displayable])
     t.collection_number(:ref=>[:pbcoreRelation, :coll_num], :index_as => [:stored_searchable, :displayable])
@@ -170,28 +166,31 @@ class Document < ActiveFedora::OmDatastream
 
   def self.xml_template
     builder = Nokogiri::XML::Builder.new do |xml|
-
-      xml.pbcoreDescriptionDocument("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
-        "xsi:schemaLocation"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html") {
-
-        xml.pbcoreIdentifier(:source=>HydraPbcore.config["institution"], :annotation=>"PID")
-        xml.pbcoreTitle(:titleType=>"Program")
-        xml.pbcoreDescription(:descriptionType=>"Program",
-          :descriptionTypeSource=>"pbcoreDescription/descriptionType",
-          :descriptionTypeRef=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#description",
-          :annotation=>"Summary"
-        )
-        xml.pbcoreDescription(:descriptionType=>"Table of Contents",
-          :descriptionTypeSource=>"pbcoreDescription/descriptionType",
-          :descriptionTypeRef=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#table-of-contents",
-          :annotation=>"Parts List"
-        )
-        xml.pbcoreRightsSummary {
-          xml.rightsSummary
-        }
-        xml.pbcoreAnnotation(:annotationType=>"Notes")
-
+      xml.pbcoreDescriptionDocument("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html") {
+        xml.pbcoreIdentifier(:source=>HydraPbcore.config["institution"], :annotation=>"PID")        
       }
+
+      # xml.pbcoreDescriptionDocument("xmlns:xsi"=>"http://www.w3.org/2001/XMLSchema-instance",
+      #   "xsi:schemaLocation"=>"http://www.pbcore.org/PBCore/PBCoreNamespace.html") {
+
+      #   xml.pbcoreIdentifier(:source=>HydraPbcore.config["institution"], :annotation=>"PID")
+      #   xml.pbcoreTitle(:titleType=>"Program")
+      #   xml.pbcoreDescription(:descriptionType=>"Program",
+      #     :descriptionTypeSource=>"pbcoreDescription/descriptionType",
+      #     :descriptionTypeRef=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#description",
+      #     :annotation=>"Summary"
+      #   )
+      #   xml.pbcoreDescription(:descriptionType=>"Table of Contents",
+      #     :descriptionTypeSource=>"pbcoreDescription/descriptionType",
+      #     :descriptionTypeRef=>"http://pbcore.org/vocabularies/pbcoreDescription/descriptionType#table-of-contents",
+      #     :annotation=>"Parts List"
+      #   )
+      #   xml.pbcoreRightsSummary {
+      #     xml.rightsSummary
+      #   }
+      #   xml.pbcoreAnnotation(:annotationType=>"Notes")
+
+      # }
 
     end
     return builder.doc
